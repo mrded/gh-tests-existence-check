@@ -1,0 +1,5 @@
+name: 'Tests existence check'
+description: 'A GitHub Action to check that added/modified files have tests'
+runs:
+  using: 'node16'
+  main: 'index.js'
