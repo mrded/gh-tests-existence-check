@@ -18,16 +18,16 @@ The GH action is made as simple as possible, so that it may lack some setup flex
 For example, if you want to target multiple file extensions, you will need to add separate actions per extension.
 
 ## Inputs
-### `target-file-prefix`
+### `target-file-path-prefix`
 **Required** The code file path prefix to check. Example: `src/`
 
-### `target-file-suffix`
+### `target-file-path-suffix`
 **Required** The code file path suffix (aka extension) to check. Example: `.ts`
 
-### `test-file-prefix`
+### `test-file-path-prefix`
 **Required** The test file path prefix to check. Example: `tests/`
 
-### `test-file-suffix`
+### `test-file-path-suffix`
 **Required** The test file path suffix to check. Example: `.test.ts`
 
 ### `error-message`
@@ -62,10 +62,10 @@ Workflow:
 ```yaml
 uses: mrded/gh-tests-existence-check@main
 with:
-  target-file-prefix: src/
-  target-file-suffix: .ts
-  test-file-prefix: test/ 
-  test-file-suffix: .test.ts
+  target-file-path-prefix: src/
+  target-file-path-suffix: .ts
+  test-file-path-prefix: test/ 
+  test-file-path-suffix: .test.ts
 ```
 
 **Option 2:** Directory structure when having both types of files in the same directory:
@@ -82,14 +82,8 @@ Workflow:
 ```yaml
 uses: mrded/gh-tests-existence-check@main
 with:
-  target-file-prefix: src/
-  target-file-suffix: .ts
-  test-file-prefix: src/ 
-  test-file-suffix: .test.ts
+  target-file-path-prefix: src/
+  target-file-path-suffix: .ts
+  test-file-path-prefix: src/ 
+  test-file-path-suffix: .test.ts
 ```
-
-## TODO:
-
-- [ ] Ability to choose behaviour: warning/error
-- [ ] Dog fooding (add tests, and apply the GH Action on the repo)
-- [ ] Highlight files without test in "Files changed" tab

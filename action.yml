@@ -18,22 +18,22 @@ inputs:
     required: false 
     default: ${{ github.event.pull_request.number }} 
 
-  target-file-prefix:
+  target-file-path-prefix:
     description: The code file path prefix to check.
     required: true 
-  target-file-suffix:
+  target-file-path-suffix:
     description: The code file path suffix (aka extension) to check
     required: true 
 
-  test-file-prefix:
-    description: The test file path prefix to check.
+  test-file-path-prefix:
+    description: The test file path prefix to check
     required: true 
-  test-file-suffix:
+  test-file-path-suffix:
     description: The test file path suffix to check
     required: true 
 
   error-message:
-    description: The message in case test was not found.
+    description: The message in case test was not found
     required: false 
     default: :file does not have a corresponding :test test file 
 

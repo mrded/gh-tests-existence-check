@@ -23,29 +23,29 @@ async function run() {
   const repo_token = core.getInput('repo-token');
   const pull_number = core.getInput('pull-number');
 
-  const target_file_prefix = core.getInput('target-file-prefix');
-  const target_file_suffix = core.getInput('target-file-suffix');
+  const target_prefix = core.getInput('target-file-path-prefix');
+  const target_suffix = core.getInput('target-file-path-suffix');
 
-  const test_file_prefix = core.getInput('test-file-prefix');
-  const test_file_suffix = core.getInput('test-file-suffix');
+  const test_prefix = core.getInput('test-file-path-prefix');
+  const test_suffix = core.getInput('test-file-path-suffix');
 
   const error_message = core.getInput('error-message');
 
   const files_all = await getChangedFiles({ repo_name, repo_owner, repo_token, pull_number })
 
   const files_targeted = files_all
-    .filter(file => file.startsWith(target_file_prefix))
-    .filter(file => file.endsWith(target_file_suffix))
-    .filter(file => !file.endsWith(test_file_suffix));
+    .filter(file => file.startsWith(target_prefix))
+    .filter(file => file.endsWith(target_suffix))
+    .filter(file => !file.endsWith(test_suffix));
 
   files_targeted.forEach(file => {
-    const test_file = file
+    const test = file
       // TODO: this is not ideal, and may replace wrong strings.
-      .replace(target_file_prefix, test_file_prefix)
-      .replace(target_file_suffix, test_file_suffix);
+      .replace(target_prefix, test_prefix)
+      .replace(target_suffix, test_suffix);
 
-    if (!fs.existsSync(test_file)) {
-      core.setFailed(error_message.replace(':file', file).replace(':test', test_file));
+    if (!fs.existsSync(test)) {
+      core.setFailed(error_message.replace(':file', file).replace(':test', test));
     }
   });
 }
