@@ -1,34 +1,95 @@
 # Tests existence check
 Check added to ensure added/modified files have tests
 
-## Motivation
-In order to improve test coverage, we need to ensure that proposed changes have test.
+## Problem
+Sometimes developers forget to write tests, which neglects the code quality.
 
-This check is very basic, it only checks that if `foo.ts` file is added/modified - `foo.test.ts` is also expected.
+## Solution
+It's fine, we only need a gentle reminder.
+This GitHub Action is checking that every added/modified code file also has a test.
+
+**Example:** if `foo.ts` file is added/modified - `foo.test.ts` is also expected.
 
 That should encourage developers to submit changes along with tests.
 
+## No-gos
+The GH action is made as simple as possible, so that it may lack some setup flexibility. 
+
+For example, if you want to target multiple file extensions, you will need to add separate actions per extension.
+
 ## Inputs
-### `path`
-**Required** The path a folder where the code lives.
+### `target-file-prefix`
+**Required** The code file path prefix to check. Example: `src/`
 
-### `extensions`
-**Required** An array of file extensions to check.
+### `target-file-suffix`
+**Required** The code file path suffix (aka extension) to check. Example: `.ts`
 
-## Outputs
-TODO
+### `test-file-prefix`
+**Required** The test file path prefix to check. Example: `tests/`
+
+### `test-file-suffix`
+**Required** The test file path suffix to check. Example: `.test.ts`
+
+### `error-message`
+The message in case test was not found. Example: `:file does not have a corresponding :test test file`
+
+### `repo-token`
+Access token to authenticate on behalf of the GitHub App
+
+### `repo-name`
+Repository name, in case you need to override it.
+
+### `repo-owner`
+Repository owner, in case you need to override it.
+
+### `pull-number`
+Pull request number to check, in case you need to override it.
 
 ## Example usage
+**Option 1:** Directory structure when having separate folders for source and tests:
 ```
-uses: mrded/template-ts-lib/.github/actions/tests-existence-checker 
+|-- src/
+|   |-- item.ts
+|   `-- util/
+|      `-- helper.ts
+`-- test/
+    |-- item.test.ts
+    `-- util/
+       `-- helper.test.ts
+```
+Workflow:
+
+```yaml
+uses: mrded/gh-tests-existence-check@main
 with:
-  path: 'src/'
+  target-file-prefix: src/
+  target-file-suffix: .ts
+  test-file-prefix: test/ 
+  test-file-suffix: .test.ts
+```
+
+**Option 2:** Directory structure when having both types of files in the same directory:
+```
+`-- src/
+    |-- item.ts
+    |-- item.test.ts
+    `-- util/
+        |-- helper.ts
+        `-- helper.test.ts
+```
+Workflow:
+
+```yaml
+uses: mrded/gh-tests-existence-check@main
+with:
+  target-file-prefix: src/
+  target-file-suffix: .ts
+  test-file-prefix: src/ 
+  test-file-suffix: .test.ts
 ```
 
 ## TODO:
-- [x] A detailed description of what the action does.
-- [ ] Required input and output arguments.
-- [ ] Optional input and output arguments.
-- [ ] Secrets the action uses.
-- [ ] Environment variables the action uses.
-- [ ] An example of how to use your action in a workflow.
+
+- [ ] Ability to choose behaviour: warning/error
+- [ ] Dog fooding (add tests, and apply the GH Action on the repo)
+- [ ] Highlight files without test in "Files changed" tab
