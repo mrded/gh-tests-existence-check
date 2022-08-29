@@ -1,5 +1,42 @@
-name: 'Tests existence check'
-description: 'A GitHub Action to check that added/modified files have tests'
+name: Tests existence check
+description: A GitHub Action to check that added/modified files have tests
+inputs:
+  repo-token:
+    description: Access token to authenticate on behalf of the GitHub App
+    required: false 
+    default: ${{ github.token }}
+  repo-name:
+    description: Repository name
+    required: false 
+    default: ${{ github.event.repository.name }} 
+  repo-owner:
+    description: Repository owner
+    required: false 
+    default: ${{ github.repository_owner }} 
+  pull-number:
+    description: Pull request number to check
+    required: false 
+    default: ${{ github.event.pull_request.number }} 
+
+  target-file-prefix:
+    description: The code file path prefix to check.
+    required: true 
+  target-file-suffix:
+    description: The code file path suffix (aka extension) to check
+    required: true 
+
+  test-file-prefix:
+    description: The test file path prefix to check.
+    required: true 
+  test-file-suffix:
+    description: The test file path suffix to check
+    required: true 
+
+  error-message:
+    description: The message in case test was not found.
+    required: false 
+    default: :file does not have a corresponding :test test file 
+
 runs:
   using: 'node16'
   main: 'index.js'
